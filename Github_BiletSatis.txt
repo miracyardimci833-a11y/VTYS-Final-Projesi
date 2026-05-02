@@ -1,0 +1,95 @@
+CREATE DATABASE UcakBiletSistemi;
+USE UcakBiletSistemi;
+
+CREATE TABLE Airlines (
+    airline_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Airports (
+    airport_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100),
+    city VARCHAR(50),
+    country VARCHAR(50)
+);
+
+
+
+CREATE TABLE Flights (
+    flight_id INT PRIMARY KEY AUTO_INCREMENT,
+    airline_id INT,
+    departure_airport INT,
+    arrival_airport INT,
+    departure_time DATETIME,
+    arrival_time DATETIME,
+    price DECIMAL(10,2),
+
+    FOREIGN KEY (airline_id) REFERENCES Airlines(airline_id),
+    FOREIGN KEY (departure_airport) REFERENCES Airports(airport_id),
+    FOREIGN KEY (arrival_airport) REFERENCES Airports(airport_id)
+);
+
+
+CREATE TABLE Passengers (
+    passenger_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50),
+    surname VARCHAR(50),
+    email VARCHAR(100)
+);
+
+
+
+CREATE TABLE Tickets (
+    ticket_id INT PRIMARY KEY AUTO_INCREMENT,
+    passenger_id INT,
+    flight_id INT,
+    seat_number VARCHAR(10),
+
+    FOREIGN KEY (passenger_id) REFERENCES Passengers(passenger_id),
+    FOREIGN KEY (flight_id) REFERENCES Flights(flight_id)
+);
+
+
+
+INSERT INTO Airlines (name) VALUES 
+('Turkish Airlines'),
+('Pegasus Airlines'),
+('SunExpress');
+
+
+
+
+INSERT INTO Airports (name, city, country) VALUES
+('Istanbul Airport', 'Istanbul', 'Turkey'),
+('Sabiha Gokcen Airport', 'Istanbul', 'Turkey'),
+('Ankara Esenboga Airport', 'Ankara', 'Turkey'),
+('Izmir Adnan Menderes Airport', 'Izmir', 'Turkey'),
+('Antalya Airport', 'Antalya', 'Turkey');
+
+
+
+INSERT INTO Flights (airline_id, departure_airport, arrival_airport, departure_time, arrival_time, price) VALUES
+(1, 1, 3, '2026-05-10 08:00:00', '2026-05-10 09:00:00', 1200),
+(1, 1, 4, '2026-05-10 12:00:00', '2026-05-10 13:15:00', 1350),
+(2, 2, 5, '2026-05-11 14:00:00', '2026-05-11 15:30:00', 900),
+(3, 4, 1, '2026-05-12 09:00:00', '2026-05-12 10:20:00', 1100),
+(2, 5, 1, '2026-05-13 18:00:00', '2026-05-13 19:30:00', 950);
+
+
+
+INSERT INTO Passengers (name, surname, email) VALUES
+('Ahmet', 'Yılmaz', 'ahmet@gmail.com'),
+('Ayşe', 'Demir', 'ayse@gmail.com'),
+('Mehmet', 'Kaya', 'mehmet@gmail.com'),
+('Elif', 'Çelik', 'elif@gmail.com'),
+('Can', 'Aydın', 'can@gmail.com');
+
+
+
+INSERT INTO Tickets (passenger_id, flight_id, seat_number) VALUES
+(1, 1, '12A'),
+(1, 2, '14C'), -- aynı kişi 2 bilet aldı
+(2, 3, '15B'),
+(3, 4, '10D'),
+(4, 5, '9A'),
+(2, 1, '16B'); -- aynı uçuşta farklı kişi
